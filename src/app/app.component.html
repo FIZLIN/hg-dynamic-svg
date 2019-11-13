@@ -20,11 +20,11 @@
         </div>
         <div class="row">
           <span class="title">x: </span>
-          <input class="value" disabled [ngModel]="getCurrentElementX()" type="number" name="x" />
+          <input class="value" disabled [ngModel]="selectedElementData.position.x" type="number" name="x" />
         </div>
         <div class="row">
           <span class="title">y: </span>
-          <input class="value" disabled [ngModel]="getCurrentElementY()" type="number" name="y" />
+          <input class="value" disabled [ngModel]="selectedElementData.position.y" type="number" name="y" />
         </div>
         <div class="row" *ngIf="selectedElementData.type === ElementType.RECTANGLE">
           <span class="title">width: </span>
@@ -144,21 +144,21 @@
           [attr.r]="(idx === selectedElementIdx ? selectedElementData : el).position.radius || 10" [attr.fill]="el.style?.fill || '#f14e5d'"
         />
 
-
         <circle [attr.elIdx]="idx"
           *ngIf="selectedElementIdx == idx" class="draggable resizeHandle"
-          [attr.cx]="getCurrentElementX() + selectedElementData.position[el.type === ElementType.RECTANGLE ? 'width' : 'radius']"
-          [attr.cy]="getCurrentElementY() + selectedElementData.position[el.type === ElementType.RECTANGLE ? 'height' : 'radius']"
+          [attr.cx]="getResizeDotX()"
+          [attr.cy]="getResizeDotY()"
           r="2.5" fill="#ff7f0e"
         />
 
         <text class="draggable" [ngClass]="{ 'isEditing': isEditing }"
         [attr.x]="calcTextX(el)" [attr.y]="calcTextY(el)" [attr.fill]="el.style.textColor"
-        dominant-baseline="middle" text-anchor="middle" [attr.font-size]="el.style.fontSize > 0 ? el.style.fontSize : 1">
+        dominant-baseline="middle" text-anchor="middle" [attr.font-size] ="el.style.fontSize > 0 ? el.style.fontSize : 1">
           {{ getArrowData(el, idx) }}
           {{ getValue(el, idx) }}
           </text>
       </g>
+      
     </svg>
   </div>
 </div>

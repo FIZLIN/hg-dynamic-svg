@@ -72,10 +72,10 @@ enum Direction {
   DOWN = 'down'
 }
 enum Arrow {
-  left = '⬅︎',
-  right = '︎➡︎',
-  up = '⬆',
-  down = '⬇'
+  left = '⇦', //'⬅︎',
+  right = '⇨', // '︎︎︎︎➡︎',
+  up = '⇧', // '⬆',
+  down = '⇩' // '⬇'
 }
 
 interface IElement {
@@ -150,13 +150,14 @@ export class AppComponent implements AfterViewInit {
 
   offset: any;
 
+  initialCoords: { x: number, y: number };
+
   constructor(private domSanitaizer: DomSanitizer) {
     this.loadElements();
-  }
-
-  ngAfterViewInit() {
     this.fillBackgroundSvg();
   }
+
+  ngAfterViewInit() { }
 
   loadElements() {
     this.elements = [
@@ -286,9 +287,15 @@ export class AppComponent implements AfterViewInit {
     this.selectedElementIdx = selectedElementIdx;
     this.selectedElement = selectedElement;
 
+
     this.textElement = draggingText ? evt.target : evt.target.parentElement.children[1];
 
     this.selectedElementData = this.elements[this.selectedElementIdx];
+
+    this.initialCoords = {
+      x: this.selectedElementData.position.x,
+      y: this.selectedElementData.position.y
+    };
   }
 
   startDrag(evt) {
@@ -334,12 +341,11 @@ export class AppComponent implements AfterViewInit {
       return;
     }
 
-    const origX = this.selectedElementData.position.x;
-    const origY = this.selectedElementData.position.y;
+    const origX = this.initialCoords.x;
+    const origY = this.initialCoords.y; ;
     
-    const currX = this.getCurrentElementX();
-    const currY = this.getCurrentElementY();
-
+    const currX = this.selectedElementData.position.x;
+    const currY = this.selectedElementData.position.y;
 
     const coord = this.getMousePosition(evt);
     const dx = utils.round_to_precision(coord.x - this.offset.x, this.gridCellSize);
@@ -365,10 +371,14 @@ export class AppComponent implements AfterViewInit {
       return;
     }
 
-    // this.transform.setTranslate(origX - dx >= 0 ? dx : -1 * origX, origY - dy >= 0 ? dy : -1 * origY);
-    // this.textTransform.setTranslate(origX - dx >= 0 ? dx : -1 * origX, origY - dy >= 0 ? dy : -1 * origY);
-    this.transform.setTranslate(dx, dy);
-    this.textTransform.setTranslate(dx, dy);
+
+    const originalElementData = this.elements[this.selectedElementIdx];
+
+    // this.transform.setTranslate(dx, dy);
+    // this.textTransform.setTranslate(dx, dy);
+
+    this.selectedElementData.position.x = this.initialCoords.x+dx;
+    this.selectedElementData.position.y = this.initialCoords.y+dy;
   }
 
   endDrag() {
@@ -423,24 +433,13 @@ export class AppComponent implements AfterViewInit {
     return y + (height || 10) * 0.5;
   }
 
-  getCurrentElementX() {
-    if (!this.selectedElementData) { return; }
-
-
-    const elX = this.selectedElementData.position.x;
-    const res = !this.transform
-      ? elX
-      : Math.round(elX + this.transform.matrix.e);
-    // console.log(elX, !!this.transform, !!this.transform ? this.transform.matrix.e:null);
-    return res;
+  getResizeDotX() {
+    const poz = this.selectedElementData.position.x + this.selectedElementData.position[this.selectedElementData.type === ElementType.RECTANGLE ? 'width' : 'radius']
+    return poz;
   }
-  getCurrentElementY() {
-    if (!this.selectedElementData) { return; }
-    const elY = this.selectedElementData.position.y;
-    const res = !this.transform
-      ? elY
-      : Math.round(elY + this.transform.matrix.f);
-    return res;
+  getResizeDotY() {
+    const poz = this.selectedElementData.position.y + this.selectedElementData.position[this.selectedElementData.type === ElementType.RECTANGLE ? 'height' : 'radius']
+    return poz;
   }
 
   handleTypeChange(evt) {
@@ -462,9 +461,14 @@ export class AppComponent implements AfterViewInit {
   reset() {
     this.shouldDrag = false;
     this.isDragging = false;
+    
     this.transform = null;
+    
     this.selectedElementIdx = null;
+    this.selectedElement = null;
     this.selectedElementData = null;
+
+    this.initialCoords = null;
   }
 
   newNode() {
