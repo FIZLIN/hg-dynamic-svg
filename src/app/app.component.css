@@ -78,3 +78,18 @@ svg.isEditing {
 .svg-container .svg {
   overflow: scroll;
 }
+
+.row.color input {
+  width: 50px;
+}
+.row.color input.color-input {
+  width: 22px;
+}
+.row.color div {
+  padding: 0 !important;
+  display: flex;
+  align-items: center;
+  margin: 0 !important;
+  justify-content: space-between;
+  width: 90px;
+}

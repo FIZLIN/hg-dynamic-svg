@@ -127,6 +127,10 @@ export class AppComponent implements AfterViewInit {
   elements: IElement[];
   data = data;
 
+  subsystems = subsystems;
+  devices = devices;
+  fields = fields;
+
   isEditing = true; // false;
   shouldDrag = false;
   isDragging = false;
@@ -164,7 +168,7 @@ export class AppComponent implements AfterViewInit {
           height: 10,
           width: 20
         },
-        style: { fill: "#ffffff", textColor: 'black' },
+        style: { fill: "#ffffff", textColor: '#000000' },
         hasDirection: true,
         directionData:{ positiveDirection: Direction.LEFT, negativeDirection: Direction.RIGHT }
       },
@@ -177,7 +181,7 @@ export class AppComponent implements AfterViewInit {
           height: 10,
           width: 20
         },
-        style: { fill: "#ffffff", textColor: "black" },
+        style: { fill: "#ffffff", textColor: "#000000" },
         hasDirection: false,
         directionData: {
           positiveDirection: null,
@@ -224,7 +228,7 @@ export class AppComponent implements AfterViewInit {
           y: 80,
           radius: 10
         },
-        style: { fill: "#2eb1b2" },
+        style: { fill: "#2eb1b2", textColor: "#ffffff" },
         hasDirection: false,
         directionData: {
           positiveDirection: null,
@@ -550,5 +554,13 @@ export class AppComponent implements AfterViewInit {
       case Direction.DOWN: this.selectedElementData.directionData.negativeDirection = Direction.UP; break;
       case Direction.UP: this.selectedElementData.directionData.negativeDirection = Direction.DOWN; break;
     }
+  }
+
+  getDevicesForSubsystem() {
+    return this.devices.filter(({ subsystem }) => subsystem === this.selectedElementData.source.subsystem);
+  }
+  getFieldsForDevice() {
+    const device = this.devices.find(({ id }) => id === this.selectedElementData.source.device);
+    return this.fields.filter(({ type }) => type === device.type);
   }
 }

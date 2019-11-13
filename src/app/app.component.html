@@ -38,20 +38,25 @@
           <span class="title">radius: </span>
           <input class="value" [(ngModel)]="selectedElementData.position.radius" type="number" [attr.step]="gridCellSize" [attr.min]="gridCellSize" name="radius" />
         </div>
-        <div class="row">
+        <div class="row color">
           <span class="title">fill: </span>
-          <input class="value" type="color" [(ngModel)]="selectedElementData.style.fill" name="fill" />
+          <div>
+            <input class="value" [(ngModel)]="selectedElementData.style.fill" name="fill" />
+            <input class="value color-input" type="color" [(ngModel)]="selectedElementData.style.fill" name="fill" />
+          </div>
         </div>
-        <div class="row">
+        <div class="row color">
           <span class="title">text color: </span>
-          <input class="value" type="color" [(ngModel)]="selectedElementData.style.textColor" name="textColor" />
+          <div>
+            <input class="value" [(ngModel)]="selectedElementData.style.textColor" name="textColor" />
+            <input class="value color-input" type="color" [(ngModel)]="selectedElementData.style.textColor" name="textColor" />
+          </div>
         </div>
       </div>
       <div class="sourceData">
         <p>Value Parameters</p>
         <div class="row">
           <span class="title">subsystem: </span>
-          <input  />
           <select class="value" [(ngModel)]="selectedElementData.source.subsystem" name="subsystem">
             <option *ngFor="let subsystem of subsystems" [value]="subsystem.id">
               {{ subsystem.name }}
@@ -60,11 +65,19 @@
         </div>
         <div class="row">
           <span class="title">device: </span>
-          <input class="value" [(ngModel)]="selectedElementData.source.device" name="device" />
+          <select class="value" [(ngModel)]="selectedElementData.source.device" name="device">
+            <option *ngFor="let device of getDevicesForSubsystem()" [value]="device.id">
+              {{ device.name }}
+            </option>
+          </select>
         </div>
         <div class="row">
           <span class="title">field: </span>
-          <input class="value" [(ngModel)]="selectedElementData.source.field" name="field" />
+          <select class="value" [(ngModel)]="selectedElementData.source.field" name="field">
+            <option *ngFor="let field of getFieldsForDevice()" [value]="field.id">
+              {{ field.name }}
+            </option>
+          </select>
         </div>
         <div class="row">
           <span class="title">unit: </span>
