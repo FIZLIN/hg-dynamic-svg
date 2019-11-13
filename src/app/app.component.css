@@ -1,0 +1,80 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+* {
+  font-family: Lato;
+}
+
+.selectedElementData {
+  max-height: 100vh;
+  overflow: scroll;
+  width: 22em;
+}
+
+.selectedElementData form {
+  display: flex;
+  flex-direction: column;
+  margin-left: 8px;
+  overflow: scroll;
+}
+
+.selectedElementData div {
+  background: #ebebeb;
+  border-radius: 10px;
+  margin-bottom: 10px;
+
+  padding: 10px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+input {
+  width: 80px;
+  text-align: center;
+}
+
+text {
+  font: .3rem sans-serif;
+  -webkit-touch-callout: none;
+  -webkit-user-select:none;
+  -khtml-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  -o-user-select:none;
+  user-select:none;
+}
+
+svg.isEditing {
+  border-right: 1px solid gray;
+  border-bottom: 1px solid gray;
+}
+
+.draggable.resizeHandle {
+  cursor: nwse-resize;
+}
+
+.draggable.isEditing {
+  cursor: move;
+}
+
+.draggable.isSelected {
+  stroke-width: 1;
+  stroke: #ff7f0e !important;
+}
+
+.svg-container {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: row-reverse;
+}
+
+
+.svg-container .svg {
+  overflow: scroll;
+}
