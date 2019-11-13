@@ -45,8 +45,12 @@
             <input class="value color-input" type="color" [(ngModel)]="selectedElementData.style.fill" name="fill" />
           </div>
         </div>
+        <div class="row">
+          <span class="title">font size: </span>
+          <input class="value" type="number" [(ngModel)]="selectedElementData.style.fontSize" name="fontSize" min="1" />
+        </div>
         <div class="row color">
-          <span class="title">text color: </span>
+          <span class="title">text color: </span>s
           <div>
             <input class="value" [(ngModel)]="selectedElementData.style.textColor" name="textColor" />
             <input class="value color-input" type="color" [(ngModel)]="selectedElementData.style.textColor" name="textColor" />
@@ -149,8 +153,8 @@
         />
 
         <text class="draggable" [ngClass]="{ 'isEditing': isEditing }"
-        [attr.x]="calcTextX(el)" [attr.y]="calcTextY(el)" dominant-baseline="middle" text-anchor="middle"
-          [attr.fill]="el.style.textColor || '#ffffff'">
+        [attr.x]="calcTextX(el)" [attr.y]="calcTextY(el)" [attr.fill]="el.style.textColor"
+        dominant-baseline="middle" text-anchor="middle" [attr.font-size]="el.style.fontSize > 0 ? el.style.fontSize : 1">
           {{ getArrowData(el, idx) }}
           {{ getValue(el, idx) }}
           </text>

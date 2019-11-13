@@ -1,6 +1,6 @@
-import { Component, ViewChild, ElementRef, AfterViewInit } from "@angular/core";
-import { DomSanitizer } from "@angular/platform-browser";
-import { interval } from "rxjs";
+import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
+import { interval } from 'rxjs';
 
 import { backgroundSvg } from './background-svg';
 
@@ -62,20 +62,20 @@ const data = {
 };
 
 enum ElementType {
-  RECTANGLE = "rect",
-  CIRCLE = "circle"
+  RECTANGLE = 'rect',
+  CIRCLE = 'circle'
 }
 enum Direction {
-  LEFT = "left",
-  RIGHT = "right",
-  UP = "up",
-  DOWN = "down"
+  LEFT = 'left',
+  RIGHT = 'right',
+  UP = 'up',
+  DOWN = 'down'
 }
 enum Arrow {
-  left = "⇦",
-  right = "⇨",
-  up = "⇧",
-  down = "⇩"
+  left = '⇦',
+  right = '⇨',
+  up = '⇧',
+  down = '⇩'
 }
 
 interface IElement {
@@ -95,9 +95,10 @@ interface IElement {
 
     radius?: number;
   };
-  style?: {
-    fill?: string;
-    textColor?: string;
+  style: {
+    fill: string;
+    textColor: string;
+    fontSize: number;
   };
   hasDirection: boolean;
   directionData: {
@@ -107,12 +108,12 @@ interface IElement {
 }
 
 @Component({
-  selector: "my-app",
-  templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.css"]
+  selector: 'my-app',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent implements AfterViewInit {
-  @ViewChild("svg", { static: false }) svg: ElementRef;
+  @ViewChild('svg', { static: false }) svg: ElementRef;
 
   svgWidth = 400;
   svgHeight = 255;
@@ -161,27 +162,27 @@ export class AppComponent implements AfterViewInit {
     this.elements = [
       {
         type: ElementType.RECTANGLE,
-        source: { subsystem: 1, device: 1, field: 1, unit: "A" },
+        source: { subsystem: 1, device: 1, field: 1, unit: 'A' },
         position: {
           x: 105,
           y: 50,
           height: 10,
           width: 20
         },
-        style: { fill: "#ffffff", textColor: '#000000' },
+        style: { fill: '#ffffff', textColor: '#000000', fontSize: 5 },
         hasDirection: true,
         directionData:{ positiveDirection: Direction.LEFT, negativeDirection: Direction.RIGHT }
       },
       {
         type: ElementType.RECTANGLE,
-        source: { subsystem: 1, device: 1, field: 3, unit: "V" },
+        source: { subsystem: 1, device: 1, field: 3, unit: 'V' },
         position: {
           x: 135,
           y: 50,
           height: 10,
           width: 20
         },
-        style: { fill: "#ffffff", textColor: "#000000" },
+        style: { fill: '#ffffff', textColor: '#000000', fontSize: 5 },
         hasDirection: false,
         directionData: {
           positiveDirection: null,
@@ -190,14 +191,14 @@ export class AppComponent implements AfterViewInit {
       },
       {
         type: ElementType.RECTANGLE,
-        source: { subsystem: 1, device: 1, field: 2, unit: "A" },
+        source: { subsystem: 1, device: 1, field: 2, unit: 'A' },
         position: {
           x: 105,
           y: 100,
           height: 10,
           width: 20
         },
-        style: { fill: "#ffffff", textColor: "#b94a3b" },
+        style: { fill: '#ffffff', textColor: '#b94a3b', fontSize: 5 },
         hasDirection: false,
         directionData: {
           positiveDirection: null,
@@ -206,14 +207,14 @@ export class AppComponent implements AfterViewInit {
       },
       {
         type: ElementType.RECTANGLE,
-        source: { subsystem: 1, device: 1, field: 4, unit: "V" },
+        source: { subsystem: 1, device: 1, field: 4, unit: 'V' },
         position: {
           x: 135,
           y: 100,
           height: 10,
           width: 20
         },
-        style: { fill: "#ffffff", textColor: "#b94a3b" },
+        style: { fill: '#ffffff', textColor: '#b94a3b', fontSize: 5 },
         hasDirection: false,
         directionData: {
           positiveDirection: null,
@@ -228,7 +229,7 @@ export class AppComponent implements AfterViewInit {
           y: 80,
           radius: 10
         },
-        style: { fill: "#2eb1b2", textColor: "#ffffff" },
+        style: { fill: '#2eb1b2', textColor: '#ffffff', fontSize: 5 },
         hasDirection: false,
         directionData: {
           positiveDirection: null,
@@ -261,14 +262,14 @@ export class AppComponent implements AfterViewInit {
 
   selectElement(evt) {
     if (
-      (!evt.target.classList.contains("draggable") && !this.selectedElementIdx) ||
+      (!evt.target.classList.contains('draggable') && !this.selectedElementIdx) ||
       !this.isEditing
     ) {
       this.transform = null;
       return;
     }
 
-    if (!evt.target.classList.contains("draggable")) {
+    if (!evt.target.classList.contains('draggable')) {
       this.reset();
       this.elements[this.selectedElementIdx] = { ...this.elements[this.selectedElementIdx], ...this.selectedElementData };
       this.transform = null;
@@ -291,7 +292,7 @@ export class AppComponent implements AfterViewInit {
   }
 
   startDrag(evt) {
-    if (!evt.target.classList.contains("draggable") || !this.isEditing) { return; }
+    if (!evt.target.classList.contains('draggable') || !this.isEditing) { return; }
 
     this.offset = this.getMousePosition(evt);
     this.isDragging = true;
@@ -344,7 +345,7 @@ export class AppComponent implements AfterViewInit {
     const dx = utils.round_to_precision(coord.x - this.offset.x, this.gridCellSize);
     const dy = utils.round_to_precision(coord.y - this.offset.y, this.gridCellSize);
 
-    if (evt.target.classList.contains("resizeHandle") || this.isResizing) {
+    if (evt.target.classList.contains('resizeHandle') || this.isResizing) {
       this.isResizing = true;
 
       const minSize = this.selectedElementData.type === ElementType.CIRCLE
@@ -382,12 +383,12 @@ export class AppComponent implements AfterViewInit {
     const { subsystem, device, field } = currEl.source;
     
     if (!this.data[subsystem] || !this.data[subsystem][device] || !this.data[subsystem][device][field]) {
-      return "---";
+      return '---';
     }
 
     let value = this.data[subsystem][device][field];
     if (currEl.hasDirection) { value = Math.abs(value); }
-    return `${value}${currEl.source.unit ? ` ${currEl.source.unit}` : ""}`;
+    return `${value}${currEl.source.unit ? ` ${currEl.source.unit}` : ''}`;
   }
 
   getArrowData(element: IElement, idx) {
@@ -475,7 +476,7 @@ export class AppComponent implements AfterViewInit {
         x: size, y: size,
         width: size*2, height: size*2
       },
-      style: { fill: "#f24f5e", textColor: '#ffffff' },
+      style: { fill: '#f24f5e', textColor: '#ffffff', fontSize: 5 },
       hasDirection: false,
       directionData: {
         positiveDirection: null,
@@ -492,7 +493,7 @@ export class AppComponent implements AfterViewInit {
   onFileChange(evt) {
     const file = evt.target.files[0];
     var reader = new FileReader();
-    reader.readAsText(file, "UTF-8");
+    reader.readAsText(file, 'UTF-8');
     reader.onload = (evt) => {
       const content = evt.target.result.toString();
 
@@ -504,7 +505,7 @@ export class AppComponent implements AfterViewInit {
       const svgContent = content.substr(endOfOpeningTag, startOfClosingTag);
       const svgClosingTag = content.substr(startOfClosingTag);
 
-      const [, width, height] = svgTag.match(/viewBox="\d+,\s?\d+,\s?(\d+),\s?(\d+)"/) || [];
+      const [, width, height] = svgTag.match(/viewBox='\d+,\s?\d+,\s?(\d+),\s?(\d+)'/) || [];
 
       this.svgWidth = +width;
       this.svgHeight = +height;
