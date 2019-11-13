@@ -91,11 +91,11 @@
           <input class="value" [(ngModel)]="selectedElementData.source.unit" name="unit" />
         </div>
         <div class="row">
-          <span class="title">has direction: </span>
+          <span class="title">show arrow: </span>
           <input class="value" type="checkbox" [(ngModel)]="selectedElementData.hasDirection" name="hasDirection" />
         </div>
         <div class="row"  *ngIf="selectedElementData.hasDirection">
-          <span class="title">positive direction: </span>
+          <span class="title">positive value arrow direction: </span>
           <select class="value" [(ngModel)]="selectedElementData.directionData.positiveDirection" name="positiveDirection" (change)="onDirectionChange($event)">
             <option [value]="null">-</option>
             <option [value]="Direction.LEFT">Left</option>
