@@ -530,6 +530,10 @@ export class AppComponent implements AfterViewInit {
     }
   }
 
+  setElementSubsystem = (evt) => this.selectedElementData.source.subsystem = +evt.target.value;
+  setElementDevice = (evt) => this.selectedElementData.source.device = +evt.target.value;
+  setElementField = (evt) => this.selectedElementData.source.field = +evt.target.value;
+
   getDevicesForSubsystem() {
     if (!this.selectedElementData.source.subsystem) { return []; }
     return this.devices.filter(({ subsystem }) => subsystem === this.selectedElementData.source.subsystem);

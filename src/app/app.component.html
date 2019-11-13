@@ -57,7 +57,8 @@
         <p>Value Parameters</p>
         <div class="row">
           <span class="title">subsystem: </span>
-          <select class="value" [(ngModel)]="selectedElementData.source.subsystem" name="subsystem">
+          <select class="value" name="subsystem"
+          [(ngModel)]="selectedElementData.source.subsystem" (change)="setElementSubsystem($event)">
             <option *ngFor="let subsystem of subsystems" [value]="subsystem.id">
               {{ subsystem.name }}
             </option>
@@ -65,7 +66,8 @@
         </div>
         <div class="row">
           <span class="title">device: </span>
-          <select class="value" [(ngModel)]="selectedElementData.source.device" name="device">
+          <select class="value" name="device"
+          [(ngModel)]="selectedElementData.source.device" (change)="setElementDevice($event)">
             <option *ngFor="let device of getDevicesForSubsystem()" [value]="device.id">
               {{ device.name }}
             </option>
@@ -73,7 +75,8 @@
         </div>
         <div class="row">
           <span class="title">field: </span>
-          <select class="value" [(ngModel)]="selectedElementData.source.field" name="field">
+          <select class="value" name="field"
+          [(ngModel)]="selectedElementData.source.field" (change)="setElementField($event)">
             <option *ngFor="let field of getFieldsForDevice()" [value]="field.id">
               {{ field.name }}
             </option>
