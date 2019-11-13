@@ -72,10 +72,10 @@ enum Direction {
   DOWN = 'down'
 }
 enum Arrow {
-  left = '⇦',
-  right = '⇨',
-  up = '⇧',
-  down = '⇩'
+  left = '⬅︎',
+  right = '︎➡︎',
+  up = '⬆',
+  down = '⬇'
 }
 
 interface IElement {
