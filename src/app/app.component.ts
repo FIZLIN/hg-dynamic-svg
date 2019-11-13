@@ -374,9 +374,6 @@ export class AppComponent implements AfterViewInit {
     this.isDragging = false;
     this.isResizing = false;
     this.shouldDrag = false;
-
-    // this.selectedElement = null;
-    // this.textElement = null;
   }
 
   getValue(element: IElement, idx: number) {
@@ -461,25 +458,6 @@ export class AppComponent implements AfterViewInit {
     }
   }
 
-
-  // updatePositionData(form) {
-  //   const { radius, height, width } = form.value;
-  //   if (!!radius) {
-  //     if (this.selectedElementData.position.radius !== +radius) {
-  //       this.selectedElementData.position.radius = radius;
-  //     }
-
-  //     return;
-  //   }
-  //   if (this.selectedElementData.position.height !== +height) {
-  //     this.selectedElementData.position.height = height;
-  //   }
-  //   if (this.selectedElementData.position.width !== +width) {
-  //     this.selectedElementData.position.width = width;
-  //   }
-  // }
-
-
   reset() {
     this.shouldDrag = false;
     this.isDragging = false;
@@ -489,14 +467,15 @@ export class AppComponent implements AfterViewInit {
   }
 
   newNode() {
+    const size = this.gridCellSize * 10;
     this.elements.push({
       type: ElementType.RECTANGLE,
       source: { subsystem: null, device: null, field: null, unit: null },
       position: {
-        x: this.gridCellSize, y: this.gridCellSize,
-        width: this.gridCellSize*2, height: this.gridCellSize*2
+        x: size, y: size,
+        width: size*2, height: size*2
       },
-      style: { fill: null, textColor: null },
+      style: { fill: "#f24f5e", textColor: '#ffffff' },
       hasDirection: false,
       directionData: {
         positiveDirection: null,
@@ -511,7 +490,6 @@ export class AppComponent implements AfterViewInit {
   }
 
   onFileChange(evt) {
-    console.log(evt);
     const file = evt.target.files[0];
     var reader = new FileReader();
     reader.readAsText(file, "UTF-8");
@@ -532,13 +510,9 @@ export class AppComponent implements AfterViewInit {
       this.svgHeight = +height;
       this.backgroundSvg = svgContent;
 
-      console.log(this.backgroundSvg);
-
       this.fillBackgroundSvg();
     }
-    reader.onerror = function (evt) {
-      console.error('error reading file');
-    }
+    reader.onerror = (evt) => alert('error reading file')
   }
 
   fillBackgroundSvg() {
@@ -557,9 +531,11 @@ export class AppComponent implements AfterViewInit {
   }
 
   getDevicesForSubsystem() {
+    if (!this.selectedElementData.source.subsystem) { return []; }
     return this.devices.filter(({ subsystem }) => subsystem === this.selectedElementData.source.subsystem);
   }
   getFieldsForDevice() {
+    if (!this.selectedElementData.source.device) { return []; }
     const device = this.devices.find(({ id }) => id === this.selectedElementData.source.device);
     return this.fields.filter(({ type }) => type === device.type);
   }
